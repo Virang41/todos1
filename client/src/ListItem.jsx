@@ -90,15 +90,14 @@ const ListItem = ({ todoList, setAddTask, isListLoading, fetchTodoList }) => {
       {isListLoading ? (
         <ListItemSkeleton />
       ) : (
-        todoList.map((list) => (
+        (Array.isArray(todoList) ? todoList : []).map((list) => (
           <div
             key={list._id}
             className="flex flex-row justify-between items-start gap-x-3"
           >
             <div
-              className={`flex flex-row justify-start items-start gap-x-4 ${
-                isCompleteLoading ? "cursor-not-allowed" : "cursor-pointer"
-              }`}
+              className={`flex flex-row justify-start items-start gap-x-4 ${isCompleteLoading ? "cursor-not-allowed" : "cursor-pointer"
+                }`}
               onClick={() => !isCompleteLoading && handleComplete(list)}
             >
               <span className="h-5 w-5">
@@ -110,9 +109,8 @@ const ListItem = ({ todoList, setAddTask, isListLoading, fetchTodoList }) => {
               </span>
 
               <span
-                className={`break-all ${
-                  list.isCompleted ? "line-through" : "no-underline"
-                }`}
+                className={`break-all ${list.isCompleted ? "line-through" : "no-underline"
+                  }`}
               >
                 {list.task}
               </span>
@@ -129,11 +127,10 @@ const ListItem = ({ todoList, setAddTask, isListLoading, fetchTodoList }) => {
               </Tooltip>
               <Tooltip text="Delete">
                 <div
-                  className={`h-5 w-5  ${
-                    isDeleteLoading
+                  className={`h-5 w-5  ${isDeleteLoading
                       ? "text-gray-400 cursor-not-allowed"
                       : "text-gray-700 cursor-pointer hover:text-rose-800"
-                  }`}
+                    }`}
                   onClick={() => {
                     if (!isDeleteLoading) handleDelete(list._id);
                   }}

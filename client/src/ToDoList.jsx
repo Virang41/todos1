@@ -22,12 +22,23 @@ const ToDoList = () => {
     try {
       const response = await axios.get(`${API_BACKEND}/get`);
 
-      setTodoList(response.data);
+      // Safely extract array — API may return array directly or wrapped in an object
+      const data = response.data;
+      if (Array.isArray(data)) {
+        setTodoList(data);
+      } else if (data && Array.isArray(data.data)) {
+        setTodoList(data.data);
+      } else if (data && Array.isArray(data.todos)) {
+        setTodoList(data.todos);
+      } else {
+        setTodoList([]);
+      }
     } catch (err) {
       const message =
         err.response?.data?.errorMessage || "Something went wrong!";
       console.error("Error:", message);
       toast.error(message);
+      setTodoList([]);
     } finally {
       setIsListLoading(false);
     }
@@ -153,11 +164,10 @@ const ToDoList = () => {
             type="submit"
             disabled={isButtonLoading}
             className={`absolute right-2.5 bottom-[0.30rem] text-white font-semibold rounded-md text-sm px-4 py-2 
-      ${
-        isButtonLoading
-          ? "bg-gray-400 cursor-not-allowed"
-          : "bg-purple-600 hover:bg-purple-700 transition duration-200"
-      }`}
+      ${isButtonLoading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-purple-600 hover:bg-purple-700 transition duration-200"
+              }`}
           >
             {buttonText()}
           </button>
