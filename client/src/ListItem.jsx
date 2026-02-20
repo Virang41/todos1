@@ -11,7 +11,7 @@ const ListItem = ({ todoList, setAddTask, isListLoading, fetchTodoList, searchQu
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [isCompleteLoading, setIsCompleteLoading] = useState(false);
 
-  const API_BACKEND = import.meta.env.VITE_API_BASE_URL;
+  const API_BACKEND = "/api";
 
   // Highlight matching text in task names
   const highlightMatch = (text, query) => {

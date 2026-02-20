@@ -17,7 +17,7 @@ const ToDoList = () => {
   const [isButtonLoading, setButtonLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const API_BACKEND = import.meta.env.VITE_API_BASE_URL;
+  const API_BACKEND = "/api";
 
   // fetch todo using axios with async/await try/catch block
   const fetchTodoList = async () => {
