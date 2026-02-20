@@ -1,24 +1,24 @@
 const express = require("express");
-const dotenvFlow = require("dotenv-flow");
-const todoRoutes = require("./routes/todoRoutes");
 const cors = require("cors");
 const path = require("path");
 
-// dotenv-flow is used to manage environment variables across different environments
-dotenvFlow.config();
+// Load .env only in local dev (Render uses its own env vars)
+try {
+  require("dotenv-flow").config();
+} catch (e) { }
 
 const app = express();
 
-// allow requests from outside resources like postman, or your frontend if you choose to build that out
+// Allow requests from frontend / Postman
 app.use(cors());
 
-// app will serve and receive data in a JSON format
+// Serve JSON
 app.use(express.json());
 
-// the messenger between our app and our database
+// MongoDB connection
 const mongoose = require("mongoose");
+const todoRoutes = require("./routes/todoRoutes");
 
-// establish connection & give yourself a message so you know when its complete
 const source = process.env.MONGODB_ATLAS_CONNECTION;
 
 mongoose
@@ -26,14 +26,15 @@ mongoose
   .then(() => console.log("✅ DB Connected Successfully"))
   .catch((error) => console.log(error));
 
+// API routes
 app.use("/api", todoRoutes);
 
-// Serve React frontend build files
+// Serve React frontend build
 const clientBuildPath = path.join(__dirname, "../client/dist");
 app.use(express.static(clientBuildPath));
 
-// All other routes -> serve React app
-app.get("*", (req, res) => {
+// Catch-all: send React app for any non-API route (Express 5 compatible)
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(clientBuildPath, "index.html"));
 });
 
