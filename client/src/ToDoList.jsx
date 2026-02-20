@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { RiCalendarTodoLine } from "react-icons/ri";
+import { FiSearch } from "react-icons/fi";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ListItem from "./ListItem";
@@ -14,6 +15,7 @@ const ToDoList = () => {
   const [todoList, setTodoList] = useState([]);
   const [isListLoading, setIsListLoading] = useState(true);
   const [isButtonLoading, setButtonLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const API_BACKEND = import.meta.env.VITE_API_BASE_URL;
 
@@ -173,13 +175,41 @@ const ToDoList = () => {
           </button>
         </form>
 
+        {/* Search bar */}
+        <div className="w-full relative">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            <FiSearch size={18} />
+          </span>
+          <input
+            type="text"
+            placeholder="Search tasks..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-100 focus:ring-purple-500 focus:border-purple-500"
+            autoComplete="off"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-lg font-bold"
+              aria-label="Clear search"
+            >
+              &times;
+            </button>
+          )}
+        </div>
+
         {/* Render tasks using ListItem component */}
         <ListItem
-          todoList={todoList}
+          todoList={todoList.filter((item) =>
+            item.task.toLowerCase().includes(searchQuery.toLowerCase())
+          )}
           setTodoList={setTodoList}
           setAddTask={setAddTask}
           isListLoading={isListLoading}
           fetchTodoList={fetchTodoList}
+          searchQuery={searchQuery}
         />
       </div>
     </div>

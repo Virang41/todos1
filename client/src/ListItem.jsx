@@ -7,11 +7,25 @@ import Tooltip from "./Tooltip";
 import ListItemSkeleton from "./ListItemSkeleton";
 import { useState } from "react";
 
-const ListItem = ({ todoList, setAddTask, isListLoading, fetchTodoList }) => {
+const ListItem = ({ todoList, setAddTask, isListLoading, fetchTodoList, searchQuery }) => {
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [isCompleteLoading, setIsCompleteLoading] = useState(false);
 
   const API_BACKEND = import.meta.env.VITE_API_BASE_URL;
+
+  // Highlight matching text in task names
+  const highlightMatch = (text, query) => {
+    if (!query) return text;
+    const idx = text.toLowerCase().indexOf(query.toLowerCase());
+    if (idx === -1) return text;
+    return (
+      <>
+        {text.slice(0, idx)}
+        <mark className="bg-yellow-200 rounded-sm px-0.5">{text.slice(idx, idx + query.length)}</mark>
+        {text.slice(idx + query.length)}
+      </>
+    );
+  };
 
   // Set task for editing
   const handleEdit = (task) => {
@@ -112,7 +126,7 @@ const ListItem = ({ todoList, setAddTask, isListLoading, fetchTodoList }) => {
                 className={`break-all ${list.isCompleted ? "line-through" : "no-underline"
                   }`}
               >
-                {list.task}
+                {highlightMatch(list.task, searchQuery)}
               </span>
             </div>
 
@@ -128,8 +142,8 @@ const ListItem = ({ todoList, setAddTask, isListLoading, fetchTodoList }) => {
               <Tooltip text="Delete">
                 <div
                   className={`h-5 w-5  ${isDeleteLoading
-                      ? "text-gray-400 cursor-not-allowed"
-                      : "text-gray-700 cursor-pointer hover:text-rose-800"
+                    ? "text-gray-400 cursor-not-allowed"
+                    : "text-gray-700 cursor-pointer hover:text-rose-800"
                     }`}
                   onClick={() => {
                     if (!isDeleteLoading) handleDelete(list._id);
