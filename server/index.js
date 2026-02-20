@@ -2,6 +2,7 @@ const express = require("express");
 const dotenvFlow = require("dotenv-flow");
 const todoRoutes = require("./routes/todoRoutes");
 const cors = require("cors");
+const path = require("path");
 
 // dotenv-flow is used to manage environment variables across different environments
 dotenvFlow.config();
@@ -16,7 +17,6 @@ app.use(express.json());
 
 // the messenger between our app and our database
 const mongoose = require("mongoose");
-const { baseRoot } = require("./controllers/todoController");
 
 // establish connection & give yourself a message so you know when its complete
 const source = process.env.MONGODB_ATLAS_CONNECTION;
@@ -26,9 +26,16 @@ mongoose
   .then(() => console.log("✅ DB Connected Successfully"))
   .catch((error) => console.log(error));
 
-app.get("/", baseRoot);
-
 app.use("/api", todoRoutes);
+
+// Serve React frontend build files
+const clientBuildPath = path.join(__dirname, "../client/dist");
+app.use(express.static(clientBuildPath));
+
+// All other routes -> serve React app
+app.get("*", (req, res) => {
+  res.sendFile(path.join(clientBuildPath, "index.html"));
+});
 
 const PORT = process.env.PORT || 5000;
 
