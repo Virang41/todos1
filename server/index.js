@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 const mongoose = require("mongoose");
-const todoroutes = require("./routes/todoroutes");
+const todoroutes = require("./routes/todoRoutes");
 
 const source = process.env.MONGODB_ATLAS_CONNECTION;
 
