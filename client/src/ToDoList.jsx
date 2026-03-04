@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import ListItem from "./ListItem";
 
 const ToDoList = () => {
-  // Initial state object for a task
+  // stat object for the task
   const initialValue = {
     task: "",
   };
@@ -19,12 +19,12 @@ const ToDoList = () => {
 
   const API_BACKEND = "/api";
 
-  // fetch todo using axios with async/await try/catch block
+  // feeeetch to todo and in to the audioa nd solved thee error 
   const fetchTodoList = async () => {
     try {
       const response = await axios.get(`${API_BACKEND}/get`);
 
-      // Safely extract array — API may return array directly or wrapped in an object
+      // app array for this code
       const data = response.data;
       if (Array.isArray(data)) {
         setTodoList(data);
@@ -37,7 +37,7 @@ const ToDoList = () => {
       }
     } catch (err) {
       const message =
-        err.response?.data?.errorMessage || "Something went wrong!";
+        err.response?.data?.errorMessage || "wrong todo list";
       console.error("Error:", message);
       toast.error(message);
       setTodoList([]);
@@ -84,7 +84,7 @@ const ToDoList = () => {
           setAddTask(initialValue);
         } catch (err) {
           const message =
-            err.response?.data?.errorMessage || "Something went wrong!";
+            err.response?.data?.errorMessage || "Something todo list";
           console.error("Error:", message);
           toast.error(message);
         } finally {
@@ -115,7 +115,7 @@ const ToDoList = () => {
           setAddTask(initialValue);
         } catch (err) {
           const message =
-            err.response?.data?.errorMessage || "Something went wrong!";
+            err.response?.data?.errorMessage || "Something todo for code";
           console.error("Error:", message);
           toast.error(message);
         } finally {
@@ -137,28 +137,28 @@ const ToDoList = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-500 to-purple-600">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br to-black-600">
       <div className="w-[32rem] m-4 min-h-[24rem] flex flex-col justify-start items-start px-8 py-6 space-y-6 rounded-xl overflow-hidden border border-gray-300 shadow-lg bg-white">
-        <div className="flex gap-3 justify-center items-center text-3xl font-semibold text-gray-800">
+        <div className="flex gap-3 justify-center items-center text-3xl font-semibold ">
           <RiCalendarTodoLine />
           <h1>To-Do List</h1>
         </div>
 
-        {/* Form submission handles both button click and Enter key */}
+        {/* button click and enter to thee todo */}
         <form onSubmit={handleAddTask} className="w-full relative">
           <input
             id="task"
             name="task"
             type="text"
             required
-            className="block w-full p-3 ps-4 pe-24 text-sm text-gray-900 border border-gray-300 rounded-md bg-gray-100 focus:ring-purple-500 focus:border-purple-500"
+            className="block w-full p-3 ps-4 pe-24 text-sm "
             value={addTask.task}
             onChange={(e) => {
               if (!isButtonLoading) {
                 handleChange(e);
               }
             }}
-            placeholder="Add your task..."
+            placeholder="Add task"
             autoComplete="off"
           />
 
@@ -168,7 +168,7 @@ const ToDoList = () => {
             className={`absolute right-2.5 bottom-[0.30rem] text-white font-semibold rounded-md text-sm px-4 py-2 
       ${isButtonLoading
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-purple-600 hover:bg-purple-700 transition duration-200"
+                : "bg-red-600 hover:bg-purple-700 transition duration-200"
               }`}
           >
             {buttonText()}
@@ -177,7 +177,7 @@ const ToDoList = () => {
 
         {/* Search bar */}
         <div className="w-full relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2">
             <FiSearch size={18} />
           </span>
           <input
@@ -192,7 +192,7 @@ const ToDoList = () => {
             <button
               type="button"
               onClick={() => setSearchQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-lg font-bold"
+              className=" text-gray-400 hover:text-gray-600 text-lg font-bold"
               aria-label="Clear search"
             >
               &times;
