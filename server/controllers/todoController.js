@@ -7,7 +7,8 @@ exports.baseRoot = (req, res) => {
 			`<h1> todo-list </h1><p>See live todo-list app - <a href="https://mern-todofy.netlify.app">https://mern-todofy.netlify.app</a></p>`
 		);
 };
-
+// boc saari code chhe aa
+// saaro code cchhe
 exports.getTask = async (req, res) => {
 	try {
 		const alltask = await Todo.find();
@@ -16,7 +17,7 @@ exports.getTask = async (req, res) => {
 		res.status(500).json({ errorMessage: err.message });
 	}
 };
-
+// boc saari code chhe and imprtant chhe
 exports.createTask = async (req, res) => {
 	try {
 		const { task } = req.body;
@@ -31,7 +32,7 @@ exports.createTask = async (req, res) => {
 		res.status(500).json({ errorMessage: err.message });
 	}
 };
-
+//  boc nano code and saaro chhe
 exports.deleteTask = async (req, res) => {
 	try {
 		const deleted = await Todo.findByIdAndDelete(req.params.id);
@@ -42,7 +43,9 @@ exports.deleteTask = async (req, res) => {
 	} catch (err) {
 		res.status(500).json({ errorMessage: err.message });
 	}
-};
+}
+
+// improtant chhe aa codde
 
 exports.updateTask = async (req, res) => {
 	try {
