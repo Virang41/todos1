@@ -2,31 +2,31 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
 import "./index.css";
-
-const API_BACKEND = "/api";
+// api call to backend 
+const api-back = "/api";
 
 export default function App() {
-  const [tasks, setTasks] = useState([]);
+  const [task, setTasks] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [newTaskText, setNewTaskText] = useState("");
-  const [selectedTask, setSelectedTask] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [select, setSelectedTask] = useState(null);
+  const [load, setLoading] = useState(true);
 
   useEffect(() => {
     fetchTasks();
   }, []);
-
+  // important for the code
   const fetchTasks = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${API_BACKEND}/get`);
-      const data = res.data;
-      if (Array.isArray(data)) {
-        setTasks(data);
-      } else if (data && Array.isArray(data.data)) {
-        setTasks(data.data);
-      } else if (data && Array.isArray(data.todos)) {
-        setTasks(data.todos);
+      const res = await axios.get(`${api - back}/get`);
+      const name = res.data;
+      if (Array.isArray(name)) {
+        setTasks(name);
+      } else if (name && Array.isArray(name.data)) {
+        setTasks(name.data);
+      } else if (name && Array.isArray(name.todos)) {
+        setTasks(name.todos);
       } else {
         setTasks([]);
       }
@@ -43,7 +43,7 @@ export default function App() {
     if (!newTaskText.trim()) return;
 
     try {
-      const res = await axios.post(`${API_BACKEND}/new`, {
+      const res = await axios.post(`${api - back}/new`, {
         task: newTaskText.trim()
       });
       toast.success(res.data.message || "Task added");
@@ -53,23 +53,24 @@ export default function App() {
       toast.error("Error adding task");
       console.error(error);
     }
+    // usefull for code in to the many use case and aa ji chhe teno upyog code ne improve and optimizarion karva mate chhe and bov saaro u[pyog xchhhe]
   };
   // bov khaas chhe
-  const handleUpdateTask = async (taskId, updates) => {
+  const handleUpdateTask = async (task, updates) => {
     try {
-      const res = await axios.put(`${API_BACKEND}/update/${taskId}`, updates);
+      const res = await axios.put(`${api - back}/update/${task}`, updates);
       toast.success(res.data.message || "Task updated");
-      if (selectedTask && selectedTask._id === taskId && updates.task) {
+      if (select && select._id === task && updates.task) {
 
-        setSelectedTask({ ...selectedTask, task: updates.task });
+        setSelectedTask({ ...select, task: updates.task });
       }
-      fetchTasks();
+      fetchTasks(); 2
     } catch (error) {
       toast.error("Error updating task");
       console.error(error);
     }
   };
-
+  // handle toggle te website par toggle te karv mate cchhe tethi te bav upyohi chhe and usefull chhe jeti teno upyog karvo joiye
   const handleToggleComplete = (task, e) => {
     e.stopPropagation();
     handleUpdateTask(task._id, {
@@ -78,14 +79,15 @@ export default function App() {
     });
   };
 
-  const handleDeleteTask = async (taskId) => {
+  const handleDeleteTask = async (tasky) => {
     try {
-      const res = await axios.delete(`${API_BACKEND}/delete/${taskId}`);
+      const res = await axios.delete(`${api - back}/delete/${tasky}`);
       toast.success(res.data.message || "Task deleted");
-      if (selectedTask && selectedTask._id === taskId) {
+      if (select && select._id === tasky) {
 
         setSelectedTask(null);
       }
+      // thi is a important chhe ocd emkaate and bov saaro upyog thai chhe ano and bov susefull chhea tethu mare tane kevi cchhe ke aa bov important chhe.
       fetchTasks();
     } catch (error) {
       toast.error("Error deleting task");
@@ -93,45 +95,45 @@ export default function App() {
     }
   };
 
-  const filteredTasks = tasks.filter((t) =>
+  const taskend = task.filter((t) =>
     t.task.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const pendingTasks = filteredTasks.filter((t) => !t.isCompleted);
+  const pendingTasks = taskend.filter((t) => !t.isCompleted);
   // pending stsayud chhe
-  const completedTasks = filteredTasks.filter((t) => t.isCompleted);
-
+  const completedTasks = taskend.filter((t) => t.isCompleted);
+  // aano upyog chh eke aa bets chheh and ano upyog te bov vadhare chhe and saaro upyog chhe ano.
   return (
     <>
       <Toaster position="top-right" />
-      <div className={`app ${selectedTask ? "active-task" : "no-active-task"}`}>
-        <header className="flex-row">
-          <a href="#" className="logo" onClick={(e) => { e.preventDefault(); setSelectedTask(null); }}>
+      <div classname={`app ${select ? "active-task" : "no-active-task"}`}>
+        <header classname="flex-row">
+          <a href="#" classname="logo" onClick={(e) => { e.preventDefault(); setSelectedTask(null); }}>
             Albatross Todo
           </a>
-          <div className="flex-spacer"></div>
+          <div classname="flex-spacer"></div>
           {/* Mock theme toggle */}
           <button onClick={() => document.body.classList.toggle("dark")}>
             🌓
           </button>
         </header>
 
-        <main className="flex-row">
-          <div className="task-list">
-            <div className="task-list-search">
+        <main classname="flex-row">
+          <div classname="task-list">
+            <div classname="task-list-search">
               {/* thsi is very bov important */}
-              <div className="flex-row task-list-search-row">
+              <div classname="flex-row task-list-search-row">
                 <input
                   type="text"
                   placeholder="Search tasks..."
-                  className="task-list-search-input"
+                  classname="task-list-search-input"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
             </div>
 
-            <form className="flex-row" onSubmit={handleCreateTask} style={{ marginBottom: '16px' }}>
+            <form classname="flex-row" onSubmit={handleCreateTask} style={{ marginBottom: '16px' }}>
               <input
                 type="text"
                 placeholder="New task..."
@@ -140,28 +142,28 @@ export default function App() {
                 // this is imprtant
                 style={{ flexGrow: 1, minWidth: 0 }}
               />
-              <button type="submit" className="task-list-new-task">
+              <button type="submit" classname="task-list-new-task">
                 +
               </button>
             </form>
-
-            <ul className="task-list-list">
-              {loading && <div style={{ padding: "10px" }}>Loading tasks...</div>}
-              {!loading && tasks.length === 0 && (
-                <div className="task-page-empty" style={{ opacity: 0.7, minHeight: '150px' }}></div>
+            {/* this ipmortant hchh eoc emaate and bov saaru upyogi chhe and ane mare best impropvekarna maate chhe. */}
+            <ul classname="task-list-list">
+              {load && <div style={{ padding: "10px" }}>Loading tasks...</div>}
+              {!load && task.length === 0 && (
+                <div classname="task-page-empty" style={{ opacity: 0.7, minHeight: '150px' }}></div>
               )}
 
               {pendingTasks.length > 0 && (
-                <div className="day">
-                  <div className="day-header">Pending — {pendingTasks.length}</div>
-                  <ul className="tasks flex-col">
+                <div classname="day">
+                  <div classname="day-header">Pending — {pendingTasks.length}</div>
+                  <ul classname="tasks flex-col">
                     {pendingTasks.map((t) => (
-                      <li key={t._id} className="task-li">
+                      <li key={t._id} classname="task-li">
                         <div
-                          className={`task ${selectedTask?._id === t._id ? "active" : ""}`}
+                          classname={`task ${select?._id === t._id ? "active" : ""}`}
                           onClick={() => setSelectedTask(t)}
                         >
-                          <div className="task-status">
+                          <div classname="task-status">
                             {/* handke kare cche code ne */}
                             <input
                               type="checkbox"
@@ -169,10 +171,11 @@ export default function App() {
                               onChange={(e) => handleToggleComplete(t, e)}
                             />
                           </div>
-                          <div className="task-content">
-                            <div className="task-text">{t.task}</div>
-                            <div className="task-category">
-                              <span className="category">Task</span>
+                          {/* and ano uppyog vadahre chhe cod emate important cnad ebst usecase chhe and ano upyog chh evadhaare jenathi aa best and saaru chhe and vadhare saru chhe an best chhe. */}
+                          <div classname="task-content">
+                            <div classname="task-text">{t.task}</div>
+                            <div classname="task-category">
+                              <span classname="category">Task</span>
                             </div>
                           </div>
                         </div>
@@ -183,29 +186,29 @@ export default function App() {
               )}
               {/* length bov dalmbi chhe */}
               {completedTasks.length > 0 && (
-                <div className="day">
+                <div classname="day">
                   {/* aa best chhe cod emmat */}
-                  <div className="day-header" style={{ color: "var(--secondary-text)", borderBottomColor: "var(--secondary-text)" }}>
+                  <div classname="day-header" style={{ color: "var(--secondary-text)", borderBottomColor: "var(--secondary-text)" }}>
                     Done — {completedTasks.length}
                   </div>
-                  <ul className="tasks flex-col">
+                  <ul classname="tasks flex-col">
                     {completedTasks.map((t) => (
-                      <li key={t._id} className="task-li">
+                      <li key={t._id} classname="task-li">
                         <div
-                          className={`task task-done ${selectedTask?._id === t._id ? "active" : ""}`}
+                          classname={`task task-done ${select?._id === t._id ? "active" : ""}`}
                           onClick={() => setSelectedTask(t)}
                         >
-                          <div className="task-status">
+                          <div classname="task-status">
                             <input
                               type="checkbox"
                               checked={true}
                               onChange={(e) => handleToggleComplete(t, e)}
                             />
                           </div>
-                          <div className="task-content">
-                            <div className="task-text">{t.task}</div>
-                            <div className="task-category">
-                              <span className="category">Done</span>
+                          <div classname="task-content">
+                            <div classname="task-text">{t.task}</div>
+                            <div classname="task-category">
+                              <span classname="category">Done</span>
                             </div>
                           </div>
                         </div>
@@ -218,28 +221,28 @@ export default function App() {
           </div>
           {/* important chhe aa code */}
           {/* imprtasbt chhe  */}
-          <div className={`task-page ${!selectedTask ? "task-page-empty" : ""}`}>
-            {selectedTask && (
+          <div classname={`task-page ${!select ? "task-page-empty" : ""}`}>
+            {select && (
               <>
-                <div className="task-page-header flex-row">
+                <div classname="task-page-header flex-row">
                   <button onClick={() => setSelectedTask(null)}>Close</button>
-                  <div className="flex-spacer"></div>
-                  <button onClick={() => handleDeleteTask(selectedTask._id)} style={{ color: "var(--red)" }}>
+                  <div classname="flex-spacer"></div>
+                  <button onClick={() => handleDeleteTask(select._id)} style={{ color: "var(--red)" }}>
                     Delete
                   </button>
                 </div>
-                <div className="task-editor flex-col">
-                  <div className="textarea-group task-editor-text">
+                <div classname="task-editor flex-col">
+                  <div classname="textarea-group task-editor-text">
                     <textarea
-                      className="textarea-itself"
-                      value={selectedTask.task}
-                      onChange={(e) => setSelectedTask({ ...selectedTask, task: e.target.value })}
-                      onBlur={() => handleUpdateTask(selectedTask._id, selectedTask)}
+                      classname="textarea-itself"
+                      value={select.task}
+                      onChange={(e) => setSelectedTask({ ...select, task: e.target.value })}
+                      onBlur={() => handleUpdateTask(select._id, select)}
                     ></textarea>
                   </div>
-                  <div className="task-editor-option-row">
-                    <div className="task-editor-option-subrow" style={{ color: "var(--secondary-text)" }}>
-                      Status: {selectedTask.isCompleted ? "Completed" : "Pending"}
+                  <div classname="task-editor-option-row">
+                    <div classname="task-editor-option-subrow" style={{ color: "var(--secondary-text)" }}>
+                      Status: {select.isCompleted ? "Completed" : "Pending"}
                     </div>
                   </div>
                 </div>

@@ -10,7 +10,17 @@ const app = express();
 
 app.use(cors());
 
+app.use((req, res, next) => {
+  res.setHeader("Content-Security-Policy", "default-src 'self' http: https: 'unsafe-inline' 'unsafe-eval'; connect-src 'self' http: https: ws: wss:;");
+  next();
+});
+
 app.use(express.json());
+
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
 
 const mongoose = require("mongoose");
 const todoroutes = require("./routes/todoRoutes");
@@ -28,11 +38,11 @@ const clientbuildpath = path.resolve(__dirname, "..", "client", "dist");
 
 app.use(
   express.static(clientbuildpath, {
-    setheaders: (res, filepath) => {
-      if (filepath.endswith(".css")) {
-        res.setheader("content-type", "text/css");
-      } else if (filepath.endswith(".js")) {
-        res.setheader("content-type", "application/javascript");
+    setHeaders: (res, filepath) => {
+      if (filepath.endsWith(".css")) {
+        res.setHeader("Content-Type", "text/css");
+      } else if (filepath.endsWith(".js")) {
+        res.setHeader("Content-Type", "application/javascript");
       }
     },
 
@@ -40,7 +50,7 @@ app.use(
 );
 
 app.get(/^(?!\/api|\/assets).*/, (req, res) => {
-  res.sendfile(path.join(clientbuildpath, "index.html"));
+  res.sendFile(path.join(clientbuildpath, "index.html"));
 });
 
 const PORT = process.env.PORT || 5000;
